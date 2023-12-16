@@ -1,0 +1,26 @@
+{
+  "name": "taskboard",
+  "version": "1.0.0",
+  "description": "Task Board for the JavaScript 'ToDoList' project as part of The Odin project",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "git-publish": "git subtree push --prefix dist origin gh-pages"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ferrarib/TaskBoard.git"
+  },
+  "author": "Brandon Ferrari",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ferrarib/TaskBoard/issues"
+  },
+  "homepage": "https://github.com/ferrarib/TaskBoard#readme",
+  "dependencies": {
+    "webpack": "^5.89.0"
+  },
+  "devDependencies": {
+    "webpack-cli": "^5.1.4"
+  }
+}
