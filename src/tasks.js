@@ -1,3 +1,4 @@
+import { GetTaskItems } from "./data";
 
 export class Task {
 
@@ -102,12 +103,12 @@ function CreateDOMTaskItem(taskItem) {
 }
 
 
-export default function(allItems) {
-
+export default function() {
+    let allItems = GetTaskItems();
     console.log(allItems);
 
     let backlogItems = allItems.filter((item) => { return item.status == "Backlog"});
-    let inProgressItems = allItems.filter((item) => { return item.status == "InProgress"});
+    let inProgressItems = allItems.filter((item) => { return item.status == "In Progress"});
     let completedItems = allItems.filter((item) => { return item.status == "Completed"});
 
     const taskTypeContainer = document.createElement('div');
@@ -126,7 +127,6 @@ export default function(allItems) {
     backlogItemContainer.classList.add('task-item-container');
 
     backlogItems.forEach((item) => {
-        console.log("adding item to backlog...");
         backlogItemContainer.appendChild(CreateDOMTaskItem(item));
     });
     backlog.appendChild(backlogItemContainer);

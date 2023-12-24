@@ -1,16 +1,49 @@
+import { Render } from "./index";
+import {AddTask, FilterItems, SortItems} from './taskManagement';
+import { GetProjects, GetCurrentProject, SetCurrentProject } from './data';
 
-let currentProject = "Default";
+export default function() {
+    let projects = GetProjects();
+    let currentProject = GetCurrentProject();
 
-export default function(AddTask, FilterItems, SortItems) {
     const taskBar = document.createElement('div');
     taskBar.classList.add('task-bar');
 
     //Active Project
-    const activeProject = document.createElement('div');
-    activeProject.classList.add('active-project');
-    activeProject.textContent = "Project / " + currentProject;
+    const activeProjectContainer = document.createElement('div');
+    activeProjectContainer.classList.add('active-project-container');
 
-    taskBar.appendChild(activeProject);
+    const activeProjectPrefix = document.createElement('div');
+    activeProjectPrefix.classList.add('active-project-prefix');
+    activeProjectPrefix.textContent = "Project / ";
+    const activeProject = document.createElement('select');
+    activeProject.id = 'active-project';
+    projects.forEach((project) => {
+        const option = document.createElement('option');
+        option.setAttribute('value', project);
+        option.textContent = project;
+        if (project == currentProject){
+            option.setAttribute('selected', true);
+        }
+        activeProject.appendChild(option);
+    });
+
+    activeProject.addEventListener('change', (e) => {
+        let children = e.target.children;
+        let activeChild = "Default";
+        for (let i = 0; i < children.length; i++){
+            if (children[i].selected){
+                activeChild = children[i].value;
+            }
+        }
+        SetCurrentProject(activeChild);
+        Render();
+    });
+
+
+    activeProjectContainer.appendChild(activeProjectPrefix);
+    activeProjectContainer.appendChild(activeProject);
+    taskBar.appendChild(activeProjectContainer);
 
     //Filters
     const filtersContainer = document.createElement('div');
