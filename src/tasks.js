@@ -1,20 +1,41 @@
 import { GetTaskItems } from "./data";
+import { AddTaskItemModal } from "./taskManagement";
 
 export class Task {
 
-    constructor(name, description, dueDate, priority, status){
-        this.name = name;
+    static #id = 1;
+
+    constructor(title, description, dueDate, priority, status){
+        this.title = title;
         this.description = description;
         this.dueDate = dueDate;
         this.priority = priority;
         this.status = status;
+        this.taskID = Task.#id;
+        Task.#id++;
     }
 
 }
 
 function CreateDOMTaskItem(taskItem) {
+    let allItems = GetTaskItems();
+
     const itemContainer = document.createElement('div');
     itemContainer.classList.add('task-item');
+
+    itemContainer.addEventListener('click', (e) => {
+        const hidden = itemContainer.querySelector('hidden');
+        console.log(allItems);
+        console.log(hidden.id);
+        const addDialog = AddTaskItemModal(allItems.find((item) => {return item.taskID == hidden.id}));
+        const content = document.getElementById('content');
+        content.appendChild(addDialog);
+        addDialog.showModal();
+    });
+
+    const hiddenID = document.createElement('hidden');
+    hiddenID.setAttribute('id', taskItem.taskID);
+    itemContainer.appendChild(hiddenID);
 
     const itemContainerLine1 = document.createElement('div');
     itemContainerLine1.classList.add('item-container-line-1');
@@ -26,7 +47,8 @@ function CreateDOMTaskItem(taskItem) {
     titleIcon.src = "./assets/library.svg";
 
     const itemTitle = document.createElement('div');
-    itemTitle.textContent = taskItem.name;
+    itemTitle.classList.add('item-title');
+    itemTitle.textContent = taskItem.title;
     
     titleContainer.appendChild(titleIcon);
     titleContainer.appendChild(itemTitle);
@@ -105,7 +127,6 @@ function CreateDOMTaskItem(taskItem) {
 
 export default function() {
     let allItems = GetTaskItems();
-    console.log(allItems);
 
     let backlogItems = allItems.filter((item) => { return item.status == "Backlog"});
     let inProgressItems = allItems.filter((item) => { return item.status == "In Progress"});

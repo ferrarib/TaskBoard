@@ -147,12 +147,16 @@ body {
     width: 30px;
 }
 
+img {
+    height: 20px;
+}
+
 .task-item-container {
     width: 100%;
     flex: 2;
     padding: 15px 10px 15px 10px;
     display: grid;
-    grid-template-columns: 1fr;
+    grid-template-columns: 100%;
     grid-template-rows: repeat(auto-fit, 120px);
     gap: 10px;
     overflow: scroll;
@@ -184,7 +188,10 @@ body {
 }
 
 .item-description-container {
-    max-width: 100%;
+    width: 100%;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
 }
 
 .item-description-label {

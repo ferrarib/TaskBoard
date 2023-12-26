@@ -1,5 +1,5 @@
 import { Render } from "./index";
-import {AddTask, FilterItems, SortItems} from './taskManagement';
+import {AddTaskItemModal, FilterItems, SortItems} from './taskManagement';
 import { GetProjects, GetCurrentProject, SetCurrentProject } from './data';
 
 export default function() {
@@ -54,7 +54,10 @@ export default function() {
     addTaskButton.classList.add('add-task');
     addTaskButton.setAttribute('src', './assets/plus.svg')
     addTaskButton.addEventListener('click', () => {
-        AddTask();
+        const content = document.getElementById('content');
+        const addTaskItemModal = AddTaskItemModal();
+        content.appendChild(addTaskItemModal);
+        addTaskItemModal.showModal();
     });
     addTaskButton.addEventListener('mouseover', () => {
         addTaskButton.setAttribute('src', './assets/plus-hover.svg')

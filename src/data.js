@@ -16,6 +16,20 @@ export function GetTaskItems(){
     return allItems[currentProject];
 }
 
+export function AddTaskItem(taskItem) {
+    allItems[currentProject].push(taskItem);
+};
+
+export function EditTaskItem(itemToEdit, formEntries) {
+    let itemIndex = allItems[currentProject].findIndex((item) => { return itemToEdit.taskID == item.taskID});
+
+    (allItems[currentProject])[itemIndex].title = formEntries['title'];
+    (allItems[currentProject])[itemIndex].description = formEntries['description'];
+    (allItems[currentProject])[itemIndex].dueDate = formEntries['duedate'];
+    (allItems[currentProject])[itemIndex].priority = formEntries['priority'];
+    // (allItems[currentProject])[itemIndex].status = formEntries['title'];
+}
+
 //Here we will attempt to fet data from local storage, otherwise create a new data object with a default project.
 export function Initialze() {
 
@@ -27,23 +41,19 @@ export function Initialze() {
         //allItems["Default"] = [];
 
         allItems["Default"] = [
-            new Task('Test', 'Test Description - This is my the best description ever', 'Tomorrow', 'Urgent', 'Completed'),
-            new Task('Test', 'Test Description - This is my the best description ever', 'Tomorrow', 'Urgent', 'Backlog'),
-            new Task('Test', 'Test Description - This is my the best description ever', 'Tomorrow', 'Urgent', 'In Progress'),
-            new Task('Test', 'Test Description - This is my the best description ever', 'Tomorrow', 'Urgent', 'Backlog')
+            new Task('Test', 'Test Description - This is my the best description ever', '2023-12-28', 'Low', 'Completed'),
+            new Task('Test', 'Test Description - This is my the best description ever', '2023-12-28', 'Medium', 'Backlog'),
+            new Task('Test', 'Test Description - This is my the best description ever', '2023-12-28', 'High', 'In Progress'),
+            new Task('Test', 'Test Description - This is my the best description ever', '2023-12-28', 'Low', 'Backlog')
         ];
         
         allItems["Admin Page"] = [
-            new Task('Test', 'Test Description - This is my the best description ever', 'Tomorrow', 'Urgent', 'Backlog'),
-            new Task('Test', 'Test Description - This is my the best description ever', 'Tomorrow', 'Urgent', 'Backlog')
+            new Task('Test', 'Test Description - This is my the best description ever', '2023-12-28', 'Urgent', 'Backlog'),
+            new Task('Test', 'Test Description - This is my the best description ever', '2023-12-28', 'Urgent', 'Backlog')
         ];        
     }
 
     SetProjects();
-}
-
-export function UpdateData() {
-    //Update the dataset here;
 }
 
 export function SetProjects(){
