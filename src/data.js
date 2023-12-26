@@ -27,6 +27,7 @@ export function EditTaskItem(itemToEdit, formEntries) {
     (allItems[currentProject])[itemIndex].description = formEntries['description'];
     (allItems[currentProject])[itemIndex].dueDate = formEntries['duedate'];
     (allItems[currentProject])[itemIndex].priority = formEntries['priority'];
+    (allItems[currentProject])[itemIndex].status = formEntries['status'];
     // (allItems[currentProject])[itemIndex].status = formEntries['title'];
 }
 

@@ -219,3 +219,64 @@ img {
     display: flex;
     gap: 5px;
 }
+
+#add-dialog {
+    width: 30vw;
+    aspect-ratio: 16 / 9;
+    border-radius: 3px;
+    border: none;
+    box-shadow: 0 0 3px grey;
+}
+
+.add-form {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.form-inputs-container {
+    flex: 2;
+}
+
+.add-button-container {
+    display: flex;
+    justify-content: right;
+    gap: 15px;
+}
+
+button {
+    background: transparent;
+    padding: 8px 20px;
+    border: 1px solid black;
+    border-radius: 3px;
+}
+
+button:hover {
+    cursor: pointer;
+    background-color: lightgrey;
+}
+
+.form-inputs-container{
+    display: flex;
+    gap: 10px;
+}
+
+.form-inputs-container *{
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.add-description-container {
+    flex: 2;
+}
+
+.add-description-label, .add-title-label, .add-duedate-label, .add-priority-label, .add-status-label {
+    justify-content: end;
+}
+
+.add-description {
+    flex: 4;
+}

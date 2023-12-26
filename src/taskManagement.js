@@ -3,6 +3,7 @@ import { Task } from "./tasks";
 import { Render } from ".";
 
 const priorityLevels = ['Low', 'Medium', 'High'];
+const taskStatusTypes = ['Backlog', 'In Progress', 'Completed'];
 
 export function AddTaskItemModal(itemToEdit = null) {
     const addTaskItemDialog = document.createElement('dialog');
@@ -16,7 +17,7 @@ export function AddTaskItemModal(itemToEdit = null) {
         e.preventDefault();
         let formData = new FormData(e.target);
         let formEntries = Object.fromEntries(formData);
-        if (itemToEdit == null){
+        if (itemToEdit == null) {
             AddTaskItem(new Task(formEntries['title'], formEntries['description'], formEntries['duedate'], formEntries['priority'], 'Backlog'));
         }
         else {
@@ -25,6 +26,12 @@ export function AddTaskItemModal(itemToEdit = null) {
         Render();
         addTaskItemDialog.close();
     });
+
+    const formInputsContainer = document.createElement('div');
+    formInputsContainer.classList.add('form-inputs-container');
+
+    const leftColumnInputs = document.createElement('div');
+    leftColumnInputs.classList.add('left-column-inputs');
 
     //Title
     const taskItemTitleContainer = document.createElement('div');
@@ -43,11 +50,11 @@ export function AddTaskItemModal(itemToEdit = null) {
     taskItemTitle.setAttribute('value', (itemToEdit?.title ?? ''));
     taskItemTitleContainer.appendChild(taskItemTitle);
 
-    addTaskItemForm.appendChild(taskItemTitleContainer);
+    leftColumnInputs.appendChild(taskItemTitleContainer);
 
     //Description
     const taskItemDescriptionContainer = document.createElement('div');
-    taskItemDescriptionContainer.classList.add('add-title-container');
+    taskItemDescriptionContainer.classList.add('add-description-container');
 
     const taskItemDescriptionLabel = document.createElement('label');
     taskItemDescriptionLabel.classList.add('add-description-label');
@@ -61,7 +68,12 @@ export function AddTaskItemModal(itemToEdit = null) {
     taskItemDescription.textContent = itemToEdit?.description ?? '';
     taskItemDescriptionContainer.appendChild(taskItemDescription);
 
-    addTaskItemForm.appendChild(taskItemDescriptionContainer);
+    leftColumnInputs.appendChild(taskItemDescriptionContainer);
+
+    formInputsContainer.appendChild(leftColumnInputs);
+
+    const rightColumnInputs = document.createElement('div');
+    rightColumnInputs.classList.add('right-column-inputs');
 
     //DueDate
     const taskItemDueDateContainer = document.createElement('div');
@@ -80,7 +92,7 @@ export function AddTaskItemModal(itemToEdit = null) {
     taskItemDueDate.setAttribute('value', itemToEdit?.dueDate ?? '');
     taskItemDueDateContainer.appendChild(taskItemDueDate);
 
-    addTaskItemForm.appendChild(taskItemDueDateContainer);
+    rightColumnInputs.appendChild(taskItemDueDateContainer);
 
     //Priority
     const taskItemPriorityContainer = document.createElement('div');
@@ -103,14 +115,56 @@ export function AddTaskItemModal(itemToEdit = null) {
         levelOption.value = level;
         levelOption.textContent = level;
 
-        if (level == itemToEdit?.priority){
+        if (level == itemToEdit?.priority) {
             levelOption.selected = true;
         }
 
         taskItemPriority.appendChild(levelOption);
     });
 
-    addTaskItemForm.appendChild(taskItemPriorityContainer);
+    rightColumnInputs.appendChild(taskItemPriorityContainer);
+
+    //Status
+    const taskItemStatusContainer = document.createElement('div');
+    taskItemStatusContainer.classList.add('add-status-container');
+
+    const taskItemStatusLabel = document.createElement('label');
+    taskItemStatusLabel.classList.add('add-status-label');
+    taskItemStatusLabel.textContent = "Status: "
+    taskItemStatusLabel.setAttribute('for', 'status');
+    taskItemStatusContainer.appendChild(taskItemStatusLabel);
+
+    const taskItemStatus = document.createElement('select');
+    taskItemStatus.classList.add('add-status-select');
+    taskItemStatus.setAttribute('name', 'status');
+    taskItemStatusContainer.appendChild(taskItemStatus);
+
+    if (itemToEdit == null){
+        taskItemStatus.setAttribute('disabled', 'true');
+    }
+
+    taskStatusTypes.forEach((type) => {
+        let statusOption = document.createElement('option');
+        statusOption.classList.add('add-status-option');
+        statusOption.value = type;
+        statusOption.textContent = type;
+
+        if (itemToEdit == null && type == "Backlog"){
+            statusOption.selected = true;
+        }
+
+        if (itemToEdit != null && type == itemToEdit.status) {
+            statusOption.selected = true;
+        }
+
+        taskItemStatus.appendChild(statusOption);
+    });
+
+    rightColumnInputs.appendChild(taskItemStatusContainer);
+
+    formInputsContainer.appendChild(rightColumnInputs);
+
+    addTaskItemForm.appendChild(formInputsContainer);
 
     const buttonContainer = document.createElement('div');
     buttonContainer.classList.add('add-button-container');
