@@ -17,6 +17,30 @@ export class Task {
 
 }
 
+function ParseDueDate(dueDateString){
+
+    const currentDate = new Date();
+    const dueDate = new Date(dueDateString);
+    const diffTime = Math.abs(currentDate - dueDate);
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)); 
+
+    if (diffDays == 0){
+        return "Today";
+    }
+    else if (diffDays == 1) {
+        return "Tomorrow";
+    }
+    else if (dueDate > currentDate && diffDays > 1 && diffDays < 4){
+        return diffDays + " Days";
+    }
+    else if (dueDate < currentDate){
+        return `Passed Due (${dueDate.toDateString()})`;
+    }
+    else {
+        return dueDate.toDateString();
+    }
+}
+
 function CreateDOMTaskItem(taskItem) {
     let allItems = GetTaskItems();
 
@@ -80,7 +104,7 @@ function CreateDOMTaskItem(taskItem) {
     itemDueDateLabel.textContent = "Due: ";
 
     const itemDueDate = document.createElement('div');
-    itemDueDate.textContent = taskItem.dueDate;
+    itemDueDate.textContent = ParseDueDate(taskItem.dueDate);
 
     itemDueDateContainer.appendChild(itemDueDateLabel);
     itemDueDateContainer.appendChild(itemDueDate);

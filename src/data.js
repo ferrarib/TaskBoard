@@ -20,6 +20,10 @@ export function AddTaskItem(taskItem) {
     allItems[currentProject].push(taskItem);
 };
 
+export function GetEntireDataset() {
+    return allItems;
+}
+
 export function EditTaskItem(itemToEdit, formEntries) {
     let itemIndex = allItems[currentProject].findIndex((item) => { return itemToEdit.taskID == item.taskID});
 
@@ -51,7 +55,12 @@ export function Initialze() {
         allItems["Admin Page"] = [
             new Task('Test', 'Test Description - This is my the best description ever', '2023-12-28', 'Urgent', 'Backlog'),
             new Task('Test', 'Test Description - This is my the best description ever', '2023-12-28', 'Urgent', 'Backlog')
-        ];        
+        ];      
+        
+        allItems["Personal Portfolio"] = [
+            new Task('Test', 'Test Description - This is my the best description ever', '2023-12-28', 'Urgent', 'Backlog'),
+            new Task('Test', 'Test Description - This is my the best description ever', '2023-12-28', 'Urgent', 'Backlog')
+        ];  
     }
 
     SetProjects();

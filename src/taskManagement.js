@@ -1,4 +1,4 @@
-import { AddTaskItem, EditTaskItem } from "./data";
+import { AddTaskItem, EditTaskItem, GetCurrentProject, GetEntireDataset } from "./data";
 import { Task } from "./tasks";
 import { Render } from ".";
 
@@ -47,6 +47,7 @@ export function AddTaskItemModal(itemToEdit = null) {
     taskItemTitle.classList.add('add-title');
     taskItemTitle.setAttribute('type', 'text');
     taskItemTitle.setAttribute('name', 'title');
+    taskItemTitle.required = true;
     taskItemTitle.setAttribute('value', (itemToEdit?.title ?? ''));
     taskItemTitleContainer.appendChild(taskItemTitle);
 
@@ -90,6 +91,7 @@ export function AddTaskItemModal(itemToEdit = null) {
     taskItemDueDate.setAttribute('type', 'date');
     taskItemDueDate.setAttribute('name', 'duedate');
     taskItemDueDate.setAttribute('value', itemToEdit?.dueDate ?? '');
+    taskItemDueDate.required = true;
     taskItemDueDateContainer.appendChild(taskItemDueDate);
 
     rightColumnInputs.appendChild(taskItemDueDateContainer);
@@ -198,4 +200,71 @@ export function FilterItems() {
 
 export function SortItems() {
     console.log("Sort button was clicked!");
+}
+
+export function ManageProjectsModal(){
+    let allItems = GetEntireDataset();
+    let currentProject = GetCurrentProject();
+
+    const manageProjectsDialog = document.createElement('dialog');
+    manageProjectsDialog.id = "manage-projects-dialog";
+
+    const projectsContainer = document.createElement('div');
+    projectsContainer.classList.add('projects-container');
+
+    let bgFlag = false;
+
+    Object.entries(allItems).forEach((entry) => {
+        const project = document.createElement('div');
+        project.classList.add('project');
+        project.tabIndex = "-1";
+
+        if (bgFlag == true){
+            project.style.backgroundColor = "rgb(247, 247, 247)";
+        }
+
+        project.addEventListener('click', (e) => {
+            e.stopPropagation();
+            console.log("clicking project");
+            project.classList.add('focused');
+
+            console.log(project);
+
+            //remove focused class from remaining children;
+            const children = projectsContainer.children;
+            console.log(children);
+            for(let i = 0; i < children.length; i++){
+                if (children[i] != project){
+                    children[i].classList.remove('focused');
+                }
+            }
+        });
+        
+        const projectName = document.createElement('div');
+        projectName.classList.add('project-name');
+        projectName.textContent = entry[0];
+
+        const projectDelete = document.createElement('img');
+        projectDelete.classList.add('project-delete');
+        projectDelete.setAttribute('src', './assets/delete.svg');
+
+        project.appendChild(projectName);
+        project.appendChild(projectDelete);
+
+        projectsContainer.appendChild(project);
+        bgFlag = !bgFlag;
+
+        console.log("Current Project: ", currentProject);
+        if (entry[0] == currentProject){
+            project.click();
+        }
+    });
+
+    const projectItemsContainer = document.createElement('div');
+    projectItemsContainer.classList.add('project-items-container');
+
+    manageProjectsDialog.appendChild(projectsContainer); 
+    manageProjectsDialog.appendChild(projectItemsContainer); 
+
+    return manageProjectsDialog;
 }
