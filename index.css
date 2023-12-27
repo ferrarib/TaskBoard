@@ -378,7 +378,30 @@ button:hover {
     background-color: rgb(189, 233, 253) !important;
 }
 
+.hidden > img {
+    visibility: hidden;
+}
+
 .project-name {
     font-size: 1.2rem;
     letter-spacing: 1px;
+}
+
+.project-delete {
+    padding: 3px;
+}
+
+.project-delete:hover {
+    cursor: pointer;
+    background-color: rgb(255, 69, 69);
+    border-radius: 5px;
+}
+
+.project-items-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 10px;
+    overflow-x: hidden;
+    overflow-y: scroll;
 }
