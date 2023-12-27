@@ -22,6 +22,10 @@ export function AddTaskItem(taskItem) {
 
 export function GetEntireDataset() {
     return allItems;
+};
+
+export function DeleteProject(projectName){
+    delete allItems[projectName];
 }
 
 export function EditTaskItem(itemToEdit, formEntries) {

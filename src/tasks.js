@@ -41,7 +41,7 @@ function ParseDueDate(dueDateString){
     }
 }
 
-function CreateDOMTaskItem(taskItem) {
+export function CreateDOMTaskItem(taskItem) {
     let allItems = GetTaskItems();
 
     const itemContainer = document.createElement('div');

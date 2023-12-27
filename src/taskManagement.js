@@ -1,5 +1,5 @@
-import { AddTaskItem, EditTaskItem, GetCurrentProject, GetEntireDataset } from "./data";
-import { Task } from "./tasks";
+import { AddTaskItem, DeleteProject, EditTaskItem, GetCurrentProject, GetEntireDataset } from "./data";
+import { CreateDOMTaskItem, Task } from "./tasks";
 import { Render } from ".";
 
 const priorityLevels = ['Low', 'Medium', 'High'];
@@ -205,6 +205,7 @@ export function SortItems() {
 export function ManageProjectsModal(){
     let allItems = GetEntireDataset();
     let currentProject = GetCurrentProject();
+    let defaultProject;
 
     const manageProjectsDialog = document.createElement('dialog');
     manageProjectsDialog.id = "manage-projects-dialog";
@@ -212,33 +213,45 @@ export function ManageProjectsModal(){
     const projectsContainer = document.createElement('div');
     projectsContainer.classList.add('projects-container');
 
+    const projectItemsContainer = document.createElement('div');
+    projectItemsContainer.classList.add('project-items-container');
+
     let bgFlag = false;
 
     Object.entries(allItems).forEach((entry) => {
         const project = document.createElement('div');
         project.classList.add('project');
+        project.classList.add('hidden');
         project.tabIndex = "-1";
+
+        if (entry[0] == "Default"){
+            defaultProject = project;
+        }
 
         if (bgFlag == true){
             project.style.backgroundColor = "rgb(247, 247, 247)";
         }
 
         project.addEventListener('click', (e) => {
-            e.stopPropagation();
-            console.log("clicking project");
             project.classList.add('focused');
-
-            console.log(project);
+            project.classList.remove('hidden');
 
             //remove focused class from remaining children;
             const children = projectsContainer.children;
-            console.log(children);
             for(let i = 0; i < children.length; i++){
                 if (children[i] != project){
                     children[i].classList.remove('focused');
+                    children[i].classList.add('hidden');
                 }
             }
-        });
+
+            projectItemsContainer.innerHTML = '';
+            allItems[entry[0]].forEach((task) => {
+                const taskItem = CreateDOMTaskItem(task);
+                projectItemsContainer.appendChild(taskItem.cloneNode(true));
+
+            });
+        }, {capture: true});
         
         const projectName = document.createElement('div');
         projectName.classList.add('project-name');
@@ -248,20 +261,41 @@ export function ManageProjectsModal(){
         projectDelete.classList.add('project-delete');
         projectDelete.setAttribute('src', './assets/delete.svg');
 
+        projectDelete.addEventListener('click', () => {
+            //Are you sure? Screen
+
+            //Delete project and set new focused item to default project
+            const clickedProject = projectDelete.parentNode.querySelector('.project-name').textContent;
+            
+            //Get Child that is associated to 'clickedProject'
+            const children = projectsContainer.children;
+            let childToDelete;
+            for (let i = 0; i < children.length; i++){
+                let childName = children[i].querySelector('.project-name').textContent;
+                if (childName == clickedProject)
+                    childToDelete = children[i];
+            }
+
+            projectsContainer.removeChild(childToDelete);
+            
+            //Delete from backend
+            DeleteProject(clickedProject);
+
+            defaultProject.click();
+        });
+
         project.appendChild(projectName);
-        project.appendChild(projectDelete);
+        if (entry[0] != "Default"){
+            project.appendChild(projectDelete);
+        }
 
         projectsContainer.appendChild(project);
         bgFlag = !bgFlag;
 
-        console.log("Current Project: ", currentProject);
         if (entry[0] == currentProject){
             project.click();
         }
     });
-
-    const projectItemsContainer = document.createElement('div');
-    projectItemsContainer.classList.add('project-items-container');
 
     manageProjectsDialog.appendChild(projectsContainer); 
     manageProjectsDialog.appendChild(projectItemsContainer); 
