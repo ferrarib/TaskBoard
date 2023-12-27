@@ -20,6 +20,7 @@ export default function() {
     activeProject.id = 'active-project';
     projects.forEach((project) => {
         const option = document.createElement('option');
+        option.classList.add('active-project-option');
         option.setAttribute('value', project);
         option.textContent = project;
         if (project == currentProject){
