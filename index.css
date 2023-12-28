@@ -29,6 +29,10 @@ body {
     justify-content: space-between;
 }
 
+button {
+    font-family: 'Bebas Neue', sans-serif;
+}
+
 .title {
     padding-left: 40px;
     font-size: 4rem;  
@@ -215,6 +219,7 @@ img {
 }
 
 .task-item {
+    position: relative;
     padding: 5px 10px;
     box-sizing: border-box;
     display: flex;
@@ -228,7 +233,7 @@ img {
 }
 
 .task-item:hover {
-    background: linear-gradient(135deg, rgb(238, 238, 238) 0%, rgb(212, 212, 212) 100%);;
+    background: linear-gradient(135deg, rgb(238, 238, 238) 0%, rgb(212, 212, 212) 100%);
     cursor: pointer;
 }
 
@@ -346,6 +351,28 @@ button:hover {
     box-shadow: 0 0 3px grey;
     outline: none;
     display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.manage-projects-content {
+    display: flex;
+    flex:2;
+}
+
+.manage-projects-button-container {
+    display: flex;
+    justify-content: end;
+}
+
+.manage-projects-close {
+    border: 1px solid rgb(142, 181, 218);
+    border-radius: 3px;
+    outline: none;
+}
+
+.manage-projects-close:hover {
+    background: linear-gradient(135deg, rgb(238, 238, 238) 0%, rgb(212, 212, 212) 100%);
 }
 
 .projects-container {
@@ -387,7 +414,7 @@ button:hover {
     letter-spacing: 1px;
 }
 
-.project-delete {
+.project-delete, .delete-item-button {
     padding: 3px;
 }
 
@@ -404,4 +431,22 @@ button:hover {
     padding: 10px;
     overflow-x: hidden;
     overflow-y: scroll;
+}
+
+.delete-item-button {
+    position: absolute;
+    top: 1px;
+    right: 1px;
+    background-color: rgb(255, 69, 69);
+    border-radius: 5px;
+    cursor: pointer;
+    height: 15px;
+}
+
+.delete-item-button:hover {
+    background-color: rgb(168, 44, 44);
+}
+
+.hide-button{
+    visibility: hidden;
 }
