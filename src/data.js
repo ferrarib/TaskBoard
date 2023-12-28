@@ -18,6 +18,7 @@ export function GetTaskItems(){
 
 export function AddTaskItem(taskItem) {
     allItems[currentProject].push(taskItem);
+    SetStorage(allItems);
 };
 
 export function GetEntireDataset() {
@@ -36,35 +37,22 @@ export function EditTaskItem(itemToEdit, formEntries) {
     (allItems[currentProject])[itemIndex].dueDate = formEntries['duedate'];
     (allItems[currentProject])[itemIndex].priority = formEntries['priority'];
     (allItems[currentProject])[itemIndex].status = formEntries['status'];
-    // (allItems[currentProject])[itemIndex].status = formEntries['title'];
+
+    SetStorage(allItems);
 }
 
 //Here we will attempt to fet data from local storage, otherwise create a new data object with a default project.
 export function Initialze() {
 
-    //Local Storage or Default
-    if (false){
+    let data = JSON.parse(localStorage.getItem("task-board-storage"));
 
+    //Local Storage or Default
+    if (data){
+        allItems = data;
     }
     else {
-        //allItems["Default"] = [];
-
-        allItems["Default"] = [
-            new Task('Test', 'Test Description - This is my the best description ever', '2023-12-28', 'Low', 'Completed'),
-            new Task('Test', 'Test Description - This is my the best description ever', '2023-12-28', 'Medium', 'Backlog'),
-            new Task('Test', 'Test Description - This is my the best description ever', '2023-12-28', 'High', 'In Progress'),
-            new Task('Test', 'Test Description - This is my the best description ever', '2023-12-28', 'Low', 'Backlog')
-        ];
-        
-        allItems["Admin Page"] = [
-            new Task('Test', 'Test Description - This is my the best description ever', '2023-12-28', 'Urgent', 'Backlog'),
-            new Task('Test', 'Test Description - This is my the best description ever', '2023-12-28', 'Urgent', 'Backlog')
-        ];      
-        
-        allItems["Personal Portfolio"] = [
-            new Task('Test', 'Test Description - This is my the best description ever', '2023-12-28', 'Urgent', 'Backlog'),
-            new Task('Test', 'Test Description - This is my the best description ever', '2023-12-28', 'Urgent', 'Backlog')
-        ];  
+        console.log("No storage found");
+        allItems["Default"] = [];  
     }
 
     SetProjects();
@@ -76,4 +64,8 @@ export function SetProjects(){
 
 export function GetProjects() {
     return projects;
+}
+
+function SetStorage(storage) {
+    localStorage.setItem('task-board-storage', JSON.stringify(storage));
 }
