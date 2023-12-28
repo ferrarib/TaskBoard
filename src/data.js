@@ -27,6 +27,14 @@ export function GetEntireDataset() {
 
 export function DeleteProject(projectName){
     delete allItems[projectName];
+    SetStorage(allItems);
+}
+
+export function DeleteProjectItem(taskID) {
+    const indexAt = allItems[currentProject].findIndex((item) => item.taskID == taskID);
+
+    allItems[currentProject].splice(indexAt,1);
+    SetStorage(allItems);
 }
 
 export function EditTaskItem(itemToEdit, formEntries) {

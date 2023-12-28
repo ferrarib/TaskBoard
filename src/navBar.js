@@ -28,3 +28,8 @@ export default function NavBar(){
 
     return navBar;
 }
+
+export function RemoveDialog(dialog){
+    const content = document.getElementById('content');
+    content.removeChild(dialog);
+}

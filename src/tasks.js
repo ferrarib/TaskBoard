@@ -1,4 +1,5 @@
-import { GetTaskItems } from "./data";
+import { Render } from ".";
+import { DeleteProjectItem, GetTaskItems } from "./data";
 import { AddTaskItemModal } from "./taskManagement";
 
 export class Task {
@@ -144,6 +145,29 @@ export function CreateDOMTaskItem(taskItem) {
     itemContainer.appendChild(itemContainerLine2);
     itemContainer.appendChild(itemDescriptionContainer);
 
+    //Delete functionality
+    const deleteItemButton = document.createElement('img');
+    deleteItemButton.classList.add('delete-item-button');
+    deleteItemButton.classList.add('hide-button');
+    deleteItemButton.setAttribute('src', './assets/delete.svg');
+
+    deleteItemButton.addEventListener('click', (e) => {
+        e.stopPropagation();
+        DeleteProjectItem(taskItem.taskID);
+        Render();
+    });
+
+    itemContainer.addEventListener('mouseover', (e) => {
+        e.stopPropagation();
+        deleteItemButton.classList.remove('hide-button');
+    });
+
+    itemContainer.addEventListener('mouseout', (e) => {
+        e.stopPropagation();
+        deleteItemButton.classList.add('hide-button');
+    });
+
+    itemContainer.appendChild(deleteItemButton);
 
     return itemContainer;
 }

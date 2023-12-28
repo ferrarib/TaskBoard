@@ -1,6 +1,7 @@
 import { AddTaskItem, DeleteProject, EditTaskItem, GetCurrentProject, GetEntireDataset } from "./data";
 import { CreateDOMTaskItem, Task } from "./tasks";
 import { Render } from ".";
+import { RemoveDialog } from "./navBar";
 
 const priorityLevels = ['Low', 'Medium', 'High'];
 const taskStatusTypes = ['Backlog', 'In Progress', 'Completed'];
@@ -210,6 +211,9 @@ export function ManageProjectsModal(){
     const manageProjectsDialog = document.createElement('dialog');
     manageProjectsDialog.id = "manage-projects-dialog";
 
+    const manageProjectsContent = document.createElement('div');
+    manageProjectsContent.classList.add('manage-projects-content');
+
     const projectsContainer = document.createElement('div');
     projectsContainer.classList.add('projects-container');
 
@@ -297,8 +301,22 @@ export function ManageProjectsModal(){
         }
     });
 
-    manageProjectsDialog.appendChild(projectsContainer); 
-    manageProjectsDialog.appendChild(projectItemsContainer); 
+    manageProjectsContent.appendChild(projectsContainer); 
+    manageProjectsContent.appendChild(projectItemsContainer); 
+
+    const manageProjectsButtonContainer = document.createElement('div');
+    manageProjectsButtonContainer.classList.add('manage-projects-button-container');
+
+    const manageProjectsCloseButton = document.createElement('button');
+    manageProjectsCloseButton.classList.add('manage-projects-close');
+    manageProjectsCloseButton.textContent = "Close";
+
+    manageProjectsCloseButton.addEventListener('click', () => RemoveDialog(manageProjectsDialog));
+
+    manageProjectsButtonContainer.appendChild(manageProjectsCloseButton);
+
+    manageProjectsDialog.appendChild(manageProjectsContent);
+    manageProjectsDialog.appendChild(manageProjectsButtonContainer);
 
     return manageProjectsDialog;
 }
