@@ -1,5 +1,5 @@
 
-import { ManageProjectsModal } from "./taskManagement";
+import { RenderManageProjectsModal } from "./taskManagement";
 
 export default function NavBar(){
     const navBar = document.createElement('div');
@@ -15,11 +15,7 @@ export default function NavBar(){
 
     manageProjects.addEventListener('click', () => {
         console.log("Navbar");
-        const content = document.getElementById('content');
-        const dialog = ManageProjectsModal();
-
-        content.appendChild(dialog);
-        dialog.showModal();
+        RenderManageProjectsModal();
     });
 
     navBar.appendChild(title);

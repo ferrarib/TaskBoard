@@ -129,7 +129,7 @@ input:invalid:focus {
     letter-spacing: 2px;
     padding-left: 20px;
     padding-right: 20px;
-    width: 200px;
+    flex:2;
     appearance: none;
 }
 
@@ -449,4 +449,8 @@ button:hover {
 
 .hide-button{
     visibility: hidden;
+}
+
+.add-project {
+    font-style: italic;
 }

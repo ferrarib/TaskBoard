@@ -1,4 +1,4 @@
-import { AddTaskItem, DeleteProject, EditTaskItem, GetCurrentProject, GetEntireDataset } from "./data";
+import { AddProject, AddTaskItem, DeleteProject, EditTaskItem, GetCurrentProject, GetEntireDataset } from "./data";
 import { CreateDOMTaskItem, Task } from "./tasks";
 import { Render } from ".";
 import { RemoveDialog } from "./navBar";
@@ -186,6 +186,7 @@ export function AddTaskItemModal(itemToEdit = null) {
     cancelButton.textContent = "Cancel";
     cancelButton.addEventListener('click', () => {
         addTaskItemDialog.close();
+        RemoveDialog(addTaskItemDialog);
     });
 
     buttonContainer.appendChild(cancelButton);
@@ -203,12 +204,18 @@ export function SortItems() {
     console.log("Sort button was clicked!");
 }
 
-export function ManageProjectsModal(){
+export function RenderManageProjectsModal(){
     let allItems = GetEntireDataset();
     let currentProject = GetCurrentProject();
     let defaultProject;
 
-    const manageProjectsDialog = document.createElement('dialog');
+    const content = document.getElementById('content');
+    const dialog = document.getElementById('manage-projects-dialog');
+    
+    if (dialog != null)
+        content.removeChild(dialog);
+
+    let manageProjectsDialog = document.createElement('dialog');
     manageProjectsDialog.id = "manage-projects-dialog";
 
     const manageProjectsContent = document.createElement('div');
@@ -301,6 +308,46 @@ export function ManageProjectsModal(){
         }
     });
 
+    if (projectsContainer.children.length < 8){
+        const addProject = document.createElement('div');
+        addProject.classList.add('project');
+        addProject.classList.add('add-project');
+
+        const addProjectName = document.createElement('div');
+        addProjectName.classList.add('project-name');
+        addProjectName.textContent = "Add Project";
+
+        addProject.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const addProjectInput = document.createElement('input');
+
+            addProject.innerHTML = '';
+            addProject.appendChild(addProjectInput);
+            addProjectInput.focus();
+
+            addProjectInput.addEventListener('keydown', (e) => {
+                if (e.key == 'Enter'){
+                    console.log('submitting project...');
+                    let newProjectName = addProjectInput.value;
+                    AddProject(newProjectName);
+                    RenderManageProjectsModal();
+                }
+            });
+
+            addProjectInput.addEventListener('focusout', (e) => {
+                addProject.innerHTML = '';
+                addProject.appendChild(addProjectName);
+            })
+        });
+
+
+
+        addProject.appendChild(addProjectName);
+
+        projectsContainer.appendChild(addProject);
+        
+    }
+
     manageProjectsContent.appendChild(projectsContainer); 
     manageProjectsContent.appendChild(projectItemsContainer); 
 
@@ -311,12 +358,15 @@ export function ManageProjectsModal(){
     manageProjectsCloseButton.classList.add('manage-projects-close');
     manageProjectsCloseButton.textContent = "Close";
 
-    manageProjectsCloseButton.addEventListener('click', () => RemoveDialog(manageProjectsDialog));
+    manageProjectsCloseButton.addEventListener('click', () => {
+        RemoveDialog(manageProjectsDialog);
+        Render();
+    });
 
     manageProjectsButtonContainer.appendChild(manageProjectsCloseButton);
 
     manageProjectsDialog.appendChild(manageProjectsContent);
     manageProjectsDialog.appendChild(manageProjectsButtonContainer);
 
-    return manageProjectsDialog;
+    content.appendChild(manageProjectsDialog);
 }

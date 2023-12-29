@@ -27,6 +27,19 @@ export function GetEntireDataset() {
 
 export function DeleteProject(projectName){
     delete allItems[projectName];
+
+    if (currentProject == projectName){
+        SetCurrentProject("Default");
+    }
+
+    SetStorage(allItems);
+}
+
+export function AddProject(projectName) {
+    allItems[projectName] = [];
+
+    SetCurrentProject(projectName);
+
     SetStorage(allItems);
 }
 
@@ -62,16 +75,10 @@ export function Initialze() {
         console.log("No storage found");
         allItems["Default"] = [];  
     }
-
-    SetProjects();
-}
-
-export function SetProjects(){
-    projects = [...Object.keys(allItems)];
 }
 
 export function GetProjects() {
-    return projects;
+    return [...Object.keys(allItems)];
 }
 
 function SetStorage(storage) {
